@@ -77,5 +77,5 @@ The response taking the form:
 }
 ```
 
-Note that if we want a  persistent conversation - one that maintains a consistent topic - we need to pass in the entire conversation history in the `"text"` key when we send our POST requests. 
+Note that if we want a  persistent conversation - one that maintains a consistent topic - we need to pass in the entire conversation history in the prefixHistory key when sending POST requests.
 
