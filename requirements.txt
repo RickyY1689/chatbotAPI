@@ -1,0 +1,4 @@
+flask==1.1.2
+flask_cors==3.0.10
+tensorflow==1.14.0
+gpt_2_simple==0.7.1
