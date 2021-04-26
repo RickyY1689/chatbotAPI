@@ -12,18 +12,20 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 gpt2.download_gpt2(model_name="355M")
 
-def getResponse(msg):
-    prefixHistory = ""
+
+def getResponse(msg, prefixHistory):
     sess = gpt2.start_tf_sess()
     gpt2.load_gpt2(sess, run_name='run1')
     prefixHistory += "Person: " + msg + "\n" + "Aryeh Bookbinder:"
-    #print(sess, msg, prefixHistory)P+
+    print(prefixHistory)
     text = gpt2.generate(sess, length=200,temperature=0.6,prefix=prefixHistory, return_as_list=True)[0]
+    print(prefixHistory,  text)
     text = text[len(prefixHistory):]
+    print(prefixHistory,  text)
     botResponse = "Aryeh Bookbinder:" + text
-    prefixHistory += botResponse
+    #prefixHistory += botResponse
     end = text.find("Person") 
-    return (botResponse[:end-1]), prefixHistory
+    return (text[:end-1]), prefixHistory
 
 @app.route("/generate", methods=['POST'])
 @cross_origin()
@@ -42,10 +44,10 @@ def get_gen():
         #     prompt=text,
         #     model_name_or_path=model
         # )
-        response, _ = getResponse(data['text'])
+        response, _ = getResponse(data['text'], data['prefixHistory'])
         print(response)
-        result = response.replace("Aryeh Bookbinder", "Aryeh Bot")
-        return jsonify({'result': result})
+        #result = response.replace("Aryeh Bookbinder", "Aryeh Bot")
+        return jsonify({'result': "Aryeh Bookbinder:" + str(response)})
 
 @app.route('/test', methods=['POST'])
 def test_response():
